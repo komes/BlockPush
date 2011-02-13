@@ -1,6 +1,7 @@
 package com.bukkit.komes.PushBlock;
 
 //All the imports
+import com.bukkit.komes.PushBlock.PushBlockBlockListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,12 +42,14 @@ public class PushBlock extends JavaPlugin{
       @Override
       //When the plugin is enabled this method is called.
       public void onEnable() {
+    	  File f = new File(this.getDataFolder().getParentFile() + File.separator +  "PushBlock_Config.txt");
+    	  blockListener.load(f);
               //Create the pluginmanage pm.
               PluginManager pm = getServer().getPluginManager();
               //Create PlayerCommand listener
           pm.registerEvent(Event.Type.PLAYER_COMMAND, this.playerListener, Event.Priority.Normal, this);
           //Create BlockPlaced listener
-      pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Event.Priority.Normal, this);
+      pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Event.Priority.Normal, this);
       pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, blockListener, Event.Priority.Normal, this);
      //Get the infomation from the yml file.
       PluginDescriptionFile pdfFile = this.getDescription();

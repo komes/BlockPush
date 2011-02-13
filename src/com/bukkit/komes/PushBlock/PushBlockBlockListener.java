@@ -2,20 +2,47 @@ package com.bukkit.komes.PushBlock;
 
 //All the imports
 
+import java.io.File;
+import java.io.IOException;
+
 import com.bukkit.komes.PushBlock.PushBlockPlayerListener;
+import com.bukkit.komes.PushBlock.BlockPushConfig;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockRightClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 
+
+
 //Start the class BasicBlockListener
 public class PushBlockBlockListener extends BlockListener{
 		public int numBlock;
 		public boolean collidy;
+		public int[] BlockID = new int[200];
+		public int BlockHandH;
+		public int BlockHandV;
+		public int BlockA;
        public static PushBlock plugin;
+       BlockPushConfig myConfig = new BlockPushConfig();
+       
+       public void load(File f){
+    	   myConfig.configFile(f);
+    	   
+    	   try {
+			myConfig.LoadConfig();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		BlockHandH = Integer.parseInt(myConfig.getBlockH().trim());
+		BlockHandV = Integer.parseInt(myConfig.getBlockV().trim());
+		BlockA = Integer.parseInt(myConfig.getBlockAmount().trim());
+		BlockID = myConfig.getBlockID();
+       }
+       
        public PushBlockBlockListener(PushBlock instance) {
        plugin = instance;
        }
@@ -34,18 +61,24 @@ public class PushBlockBlockListener extends BlockListener{
        public void groupCollision (Vector dirBlock, Block[] blockArray, int blockTypeId){
     	   for (int i = 0; i <= numBlock; i++) {
     		   Block blockNew = blockArray[i].getRelative((int)dirBlock.getX(),(int) dirBlock.getY(), (int)dirBlock.getZ()); 
-    		   if (blockNew.getTypeId() != blockTypeId && blockNew.getTypeId() != 0 && blockNew.getTypeId() != 9 && blockNew.getTypeId() != 11 || (blockNew.getTypeId() == 9 && blockNew.getData() == 0) || (blockNew.getTypeId() == 11 && blockNew.getData() == 0)) {
-    			  collidy = true;
+    		   boolean selfcollide = true;
+    		   
+    		   for(int j = 0; j <= numBlock; j++){
+    			   if (blockNew == blockArray[j]){
+    				   selfcollide = false;
+    			   }
     		   }
     		   
+    		   if (blockNew.getTypeId() != blockTypeId && blockNew.getTypeId() != 0 && blockNew.getTypeId() != 9 && blockNew.getTypeId() != 11 || (blockNew.getTypeId() == 9 && blockNew.getData() == 0) || (blockNew.getTypeId() == 11 && blockNew.getData() == 0) || (selfcollide && blockNew.getTypeId() == blockTypeId)) {
+    			   collidy = true; 
+    		   }
     	   }
-    	   
        }
        
        
        
        public void groupCheck (Block blockPos, int blockTypeId, Block[] blockArray){
-    	   if (blockPos.getRelative(0, 0, 1).getTypeId() == blockTypeId ){
+    	   if (blockPos.getRelative(0, 0, 1).getTypeId() == blockTypeId && numBlock + 1 < blockArray.length){
     		   boolean blockAdded = true;
     		   Block blockNew = blockPos.getRelative(0, 0, 1);
     		   for (int i = 0; i <= numBlock; i++){
@@ -59,7 +92,7 @@ public class PushBlockBlockListener extends BlockListener{
     			   groupCheck(blockNew, blockTypeId, blockArray);
     		   }
     	   }
-    	   if (blockPos.getRelative(0, 0, -1).getTypeId() == blockTypeId ){
+    	   if (blockPos.getRelative(0, 0, -1).getTypeId() == blockTypeId && numBlock + 1 < blockArray.length){
     		   boolean blockAdded = true;
     		   Block blockNew = blockPos.getRelative(0, 0, -1);
     		   for (int i = 0; i <= numBlock; i++){
@@ -73,7 +106,7 @@ public class PushBlockBlockListener extends BlockListener{
     			   groupCheck(blockNew, blockTypeId, blockArray);
     		   }
     	   }
-    	   if (blockPos.getRelative(0, 1, 0).getTypeId() == blockTypeId ){
+    	   if (blockPos.getRelative(0, 1, 0).getTypeId() == blockTypeId && numBlock + 1 < blockArray.length){
     		   boolean blockAdded = true;
     		   Block blockNew = blockPos.getRelative(0, 1, 0);
     		   for (int i = 0; i <= numBlock; i++){
@@ -87,7 +120,7 @@ public class PushBlockBlockListener extends BlockListener{
     			   groupCheck(blockNew, blockTypeId, blockArray);
     		   }
     	   }
-    	   if (blockPos.getRelative(0, -1, 0).getTypeId() == blockTypeId ){
+    	   if (blockPos.getRelative(0, -1, 0).getTypeId() == blockTypeId && numBlock + 1 < blockArray.length){
     		   boolean blockAdded = true;
     		   Block blockNew = blockPos.getRelative(0, -1, 0);
     		   for (int i = 0; i <= numBlock; i++){
@@ -101,7 +134,7 @@ public class PushBlockBlockListener extends BlockListener{
     			   groupCheck(blockNew, blockTypeId, blockArray);
     		   }
     	   }
-    	   if (blockPos.getRelative(1, 0, 0).getTypeId() == blockTypeId ){
+    	   if (blockPos.getRelative(1, 0, 0).getTypeId() == blockTypeId && numBlock + 1 < blockArray.length){
     		   boolean blockAdded = true;
     		   Block blockNew = blockPos.getRelative(1, 0, 0);
     		   for (int i = 0; i <= numBlock; i++){
@@ -115,7 +148,7 @@ public class PushBlockBlockListener extends BlockListener{
     			   groupCheck(blockNew, blockTypeId, blockArray);
     		   }
     	   }
-    	   if (blockPos.getRelative(-1, 0, 0).getTypeId() == blockTypeId ){
+    	   if (blockPos.getRelative(-1, 0, 0).getTypeId() == blockTypeId && numBlock + 1 < blockArray.length){
     		   boolean blockAdded = true;
     		   Block blockNew = blockPos.getRelative(-1, 0, 0);
     		   for (int i = 0; i <= numBlock; i++){
@@ -131,42 +164,136 @@ public class PushBlockBlockListener extends BlockListener{
     	   }
        }
        
+       
+       public void onBlockDamage(BlockDamageEvent event){
+    	   numBlock = 0;
+	   collidy = false;  
+	   Block[] blockArray = new Block[BlockA]; 
+	   Block block = event.getBlock();
+	   Player player = event.getPlayer();
+	   Vector blockLocation = block.getLocation().toVector();
+	   Vector playerLocation = player.getLocation().toVector();
+	   ItemStack stack = player.getItemInHand();
+	   int BlockType = block.getTypeId();
+	   double dx = playerLocation.getX() - (blockLocation.getX() + 0.5);
+	   double dz = playerLocation.getZ() - (blockLocation.getZ() + 0.5);
+	   
+	   boolean goodBlock = false;
+	   int j = 0;
+	   while(BlockID[j] != -1){
+		   if(BlockType == BlockID[j]){
+			   goodBlock = true;
+		   }
+		   j++;
+	   }
+	  blockArray[0] = block;
+	  if (PushBlockPlayerListener.plugin.enabled(player)){
+		  if (stack.getTypeId() == BlockHandH && goodBlock){
+		   groupCheck(block, BlockType, blockArray);
+		   if (Math.abs(dx) > Math.abs(dz)) {
+	   			if (playerLocation.getX() > blockLocation.getX()) {
+	   				Vector dirBlock = new Vector(0, 0, 0);
+	   				dirBlock.setX(-1);
+	   				dirBlock.setY(0);
+	   				dirBlock.setZ(0);
+	   				groupCollision ( dirBlock, blockArray,BlockType);
+	   				if (collidy ==  false){
+	   					groupMove (dirBlock, blockArray, BlockType);
+	   				}
+	               
+	   			}else{
+	   				Vector dirBlock = new Vector(0, 0, 0);
+	   				dirBlock.setX(1);
+	   				dirBlock.setY(0);
+	   				dirBlock.setZ(0);
+	   				groupCollision ( dirBlock, blockArray,BlockType);
+	   				if (collidy ==  false){
+	   					groupMove (dirBlock, blockArray, BlockType);
+	   				}
+	   			} 
+	   			
+	   		}else if (Math.abs(dx) < Math.abs(dz)) {
+	   			if (playerLocation.getZ() > blockLocation.getZ()){
+	   				Vector dirBlock = new Vector(0, 0, 0);
+	   				dirBlock.setX(0);
+	   				dirBlock.setY(0);
+	   				dirBlock.setZ(-1);
+	   				groupCollision ( dirBlock, blockArray,BlockType);
+	   				if (collidy ==  false){
+	   					groupMove (dirBlock, blockArray, BlockType);	
+	   				}	
+	   			}else{
+	   				Vector dirBlock = new Vector(0, 0, 0);
+	   				dirBlock.setX(0);
+	   				dirBlock.setY(0);
+	   				dirBlock.setZ(1);
+	   				groupCollision ( dirBlock, blockArray,BlockType);
+	   				if (collidy ==  false){
+	   					groupMove (dirBlock, blockArray, BlockType);
+	   				}
+	   			
+	   			
+	   			}
+    	   
+	   		}
+		   
+	   }
+		  if (stack.getTypeId() == BlockHandV && goodBlock){
+			  groupCheck(block, BlockType, blockArray);
+			  Vector dirBlock = new Vector(0, 0, 0);
+   				dirBlock.setX(0);
+   				dirBlock.setY(1);
+   				dirBlock.setZ(0);
+   				groupCollision ( dirBlock, blockArray,BlockType);
+   				if (collidy ==  false){
+   					groupMove (dirBlock, blockArray, BlockType);
+   				}
+   				
+		  }
+   }
+}
+
        //This method is called when ever a block is placed.
 	public void onBlockRightClick(BlockRightClickEvent event) {
-    	   int pushPull = 0;
     	   numBlock = 0;
     	   collidy = false;  
-    	   Block[] blockArray = new Block[512]; 
+    	   Block[] blockArray = new Block[BlockA]; 
     	   Block block = event.getBlock();
     	   Player player = event.getPlayer();
     	   Vector blockLocation = block.getLocation().toVector();
     	   Vector playerLocation = player.getLocation().toVector();
     	   ItemStack stack = player.getItemInHand();
     	   int BlockType = block.getTypeId();
-    	   double dx = playerLocation.getX() - blockLocation.getX();
-    	   double dz = playerLocation.getZ() - blockLocation.getZ();
-    	  if (stack.getTypeId() == 288){
-    		  pushPull = 1;
-    	  }else if (stack.getTypeId() == 280){
-    		  pushPull = -1;
-    	  }
+    	   double dx = playerLocation.getX() - (blockLocation.getX() + 0.5);
+    	   double dz = playerLocation.getZ() - (blockLocation.getZ() + 0.5);
+    	   
+    	   
+    	   boolean goodBlock = false;
+    	   int j = 0;
+    	   while(BlockID[j] != -1){
+    		   if(BlockType == BlockID[j]){
+    			   goodBlock = true;
+    		   }
+    		   j++;
+    	   }
     	  blockArray[0] = block;
-    	  if (BlockType == 04 || BlockType == 05 || BlockType == 42  || BlockType == 35 || BlockType == 24 && PushBlockPlayerListener.plugin.enabled(player) && pushPull != 0){
-    		   groupCheck(block, BlockType, blockArray);
+    	  if (PushBlockPlayerListener.plugin.enabled(player)){
+    		  if (stack.getTypeId() == BlockHandH && goodBlock){   
+    		 groupCheck(block, BlockType, blockArray);
     		   if (Math.abs(dx) > Math.abs(dz)) {
     	   			if (playerLocation.getX() > blockLocation.getX()) {
     	   				Vector dirBlock = new Vector(0, 0, 0);
-    	   				dirBlock.setX(-1 * pushPull);
+    	   				dirBlock.setX(1);
     	   				dirBlock.setY(0);
     	   				dirBlock.setZ(0);
-    	   				groupCollision ( dirBlock, blockArray,BlockType);
+    	   				groupCollision (dirBlock, blockArray,BlockType);
     	   				if (collidy ==  false){
     	   					groupMove (dirBlock, blockArray, BlockType);
     	   				}
     	               
     	   			}else{
     	   				Vector dirBlock = new Vector(0, 0, 0);
-    	   				dirBlock.setX(1 * pushPull);
+    	   				dirBlock.setX(-1);
     	   				dirBlock.setY(0);
     	   				dirBlock.setZ(0);
     	   				groupCollision ( dirBlock, blockArray,BlockType);
@@ -180,7 +307,7 @@ public class PushBlockBlockListener extends BlockListener{
     	   				Vector dirBlock = new Vector(0, 0, 0);
     	   				dirBlock.setX(0);
     	   				dirBlock.setY(0);
-    	   				dirBlock.setZ(-1 * pushPull);
+    	   				dirBlock.setZ(1);
     	   				groupCollision ( dirBlock, blockArray,BlockType);
     	   				if (collidy ==  false){
     	   					groupMove (dirBlock, blockArray, BlockType);	
@@ -189,7 +316,7 @@ public class PushBlockBlockListener extends BlockListener{
     	   				Vector dirBlock = new Vector(0, 0, 0);
     	   				dirBlock.setX(0);
     	   				dirBlock.setY(0);
-    	   				dirBlock.setZ(1 * pushPull);
+    	   				dirBlock.setZ(-1);
     	   				groupCollision ( dirBlock, blockArray,BlockType);
     	   				if (collidy ==  false){
     	   					groupMove (dirBlock, blockArray, BlockType);
@@ -201,4 +328,17 @@ public class PushBlockBlockListener extends BlockListener{
     	   		}
     	   }
        }
+    	  if (stack.getTypeId() == BlockHandV && goodBlock){
+			  groupCheck(block, BlockType, blockArray);
+			  Vector dirBlock = new Vector(0, 0, 0);
+   				dirBlock.setX(0);
+   				dirBlock.setY(-1);
+   				dirBlock.setZ(0);
+   				groupCollision ( dirBlock, blockArray,BlockType);
+   				if (collidy ==  false){
+   					groupMove (dirBlock, blockArray, BlockType);
+   				}
+   				
+		  }
+	}
 }
