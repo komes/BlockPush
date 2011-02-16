@@ -1,8 +1,9 @@
-package uk.co.tron.jumbo.komes.PushBlock;
+package com.FripFrapps.komes.PushBlock;
 
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.block.Sign;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.block.SignChangeEvent;
@@ -33,7 +34,7 @@ public class PushBlockMech extends BlockListener {
 	}
 	
 	public void BlockPlace(SignChangeEvent event) {
-			Sign sign = event.getAttachedFace
+
 		}
 		
 		

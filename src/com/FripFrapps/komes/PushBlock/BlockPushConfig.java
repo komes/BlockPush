@@ -1,4 +1,4 @@
-package uk.co.tron.jumbo.komes.PushBlock;
+package com.FripFrapps.komes.PushBlock;
 
 import java.io.BufferedReader;
 import java.io.File;

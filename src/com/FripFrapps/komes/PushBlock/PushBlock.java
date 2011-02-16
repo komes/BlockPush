@@ -1,4 +1,4 @@
-package uk.co.tron.jumbo.komes.PushBlock;
+package com.FripFrapps.komes.PushBlock;
 
 //All the imports
 import java.io.File;
@@ -15,8 +15,9 @@ import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
-import uk.co.tron.jumbo.komes.PushBlock.PushBlockBlockListener;
-import uk.co.tron.jumbo.komes.PushBlock.PushBlockMech;
+import com.FripFrapps.komes.PushBlock.PushBlockBlockListener;
+import com.FripFrapps.komes.PushBlock.PushBlockMech;
+
 
 //Starts the class
 public class PushBlock extends JavaPlugin {

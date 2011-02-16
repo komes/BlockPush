@@ -1,4 +1,4 @@
-package uk.co.tron.jumbo.komes.PushBlock;
+package com.FripFrapps.komes.PushBlock;
 
 //All the imports
 
@@ -13,8 +13,9 @@ import org.bukkit.event.block.BlockRightClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import uk.co.tron.jumbo.komes.PushBlock.BlockPushConfig;
-import uk.co.tron.jumbo.komes.PushBlock.PushBlockPlayerListener;
+import com.FripFrapps.komes.PushBlock.BlockPushConfig;
+import com.FripFrapps.komes.PushBlock.PushBlockPlayerListener;
+
 
 
 
