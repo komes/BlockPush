@@ -1,4 +1,4 @@
-package com.bukkit.komes.PushBlock;
+package uk.co.tron.jumbo.komes.PushBlock;
 
 //All the imports
 import org.bukkit.entity.Player;

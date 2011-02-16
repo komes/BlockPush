@@ -1,12 +1,10 @@
-package com.bukkit.komes.PushBlock;
+package uk.co.tron.jumbo.komes.PushBlock;
 
 //All the imports
 
 import java.io.File;
 import java.io.IOException;
 
-import com.bukkit.komes.PushBlock.PushBlockPlayerListener;
-import com.bukkit.komes.PushBlock.BlockPushConfig;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockDamageEvent;
@@ -14,6 +12,9 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockRightClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import uk.co.tron.jumbo.komes.PushBlock.BlockPushConfig;
+import uk.co.tron.jumbo.komes.PushBlock.PushBlockPlayerListener;
 
 
 
@@ -28,10 +29,10 @@ public class PushBlockBlockListener extends BlockListener{
 		public int BlockA;
        public static PushBlock plugin;
        BlockPushConfig myConfig = new BlockPushConfig();
+
        
        public void load(File f){
     	   myConfig.configFile(f);
-    	   
     	   try {
 			myConfig.LoadConfig();
 		} catch (IOException e) {
@@ -266,7 +267,6 @@ public class PushBlockBlockListener extends BlockListener{
     	   int BlockType = block.getTypeId();
     	   double dx = playerLocation.getX() - (blockLocation.getX() + 0.5);
     	   double dz = playerLocation.getZ() - (blockLocation.getZ() + 0.5);
-    	   
     	   
     	   boolean goodBlock = false;
     	   int j = 0;
