@@ -25,6 +25,7 @@ public class PushBlockBlockListener extends BlockListener{
 		public int numBlock;
 		public boolean collidy;
 		public int[] BlockID = new int[200];
+		Vector[] signPos = new Vector[500];
 		public int BlockHandH;
 		public int BlockHandV;
 		public int BlockA;
@@ -44,6 +45,17 @@ public class PushBlockBlockListener extends BlockListener{
 		BlockA = Integer.parseInt(myConfig.getBlockAmount().trim());
 		BlockID = myConfig.getBlockID();
        }
+       
+       public void loadPos(File j) {
+   		myConfig.posFile(j);
+
+   		try {
+   			myConfig.loadBlockPos();
+   		} catch (IOException e) {
+   			e.printStackTrace();
+   		}
+   		signPos = myConfig.getLocations();
+   	}
        
        public PushBlockBlockListener(PushBlock instance) {
        plugin = instance;
