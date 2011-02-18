@@ -16,7 +16,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.FripFrapps.komes.PushBlock.PushBlockBlockListener;
-import com.FripFrapps.komes.PushBlock.PushBlockMech;
 
 
 //Starts the class
@@ -27,7 +26,6 @@ public class PushBlock extends JavaPlugin {
 	// Links the BasicBlockListener
 	private final PushBlockBlockListener blockListener = new PushBlockBlockListener(
 			this);
-	private final PushBlockMech blockMech = new PushBlockMech(this);
 	// Create the hashmap "basicUsers"
 	public final HashMap<Player, ArrayList<Block>> basicUsers = new HashMap<Player, ArrayList<Block>>();
 	// Create the hashmap debugees
@@ -63,7 +61,7 @@ public class PushBlock extends JavaPlugin {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			blockMech.loadPos(j);
+			blockListener.loadPos(j);
 		}
 
 		// Create the pluginmanage pm.
@@ -75,9 +73,9 @@ public class PushBlock extends JavaPlugin {
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, blockListener,
 				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.REDSTONE_CHANGE, (Listener) blockMech,
+		pm.registerEvent(Event.Type.REDSTONE_CHANGE, (Listener) blockListener,
 				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.SIGN_CHANGE, (Listener) blockMech,
+		pm.registerEvent(Event.Type.SIGN_CHANGE, (Listener) blockListener,
 				Event.Priority.Normal, this);
 		// Get the infomation from the yml file.
 		PluginDescriptionFile pdfFile = this.getDescription();
