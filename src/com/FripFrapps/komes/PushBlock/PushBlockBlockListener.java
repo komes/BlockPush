@@ -280,9 +280,9 @@ public class PushBlockBlockListener extends BlockListener{
     	   int BlockType = block.getTypeId();
     	   double dx = playerLocation.getX() - (blockLocation.getX() + 0.5);
     	   double dz = playerLocation.getZ() - (blockLocation.getZ() + 0.5);
-    	   
     	   boolean goodBlock = false;
     	   int j = 0;
+    	   System.out.println(signPos[0]);
     	   while(BlockID[j] != -1){
     		   if(BlockType == BlockID[j]){
     			   goodBlock = true;

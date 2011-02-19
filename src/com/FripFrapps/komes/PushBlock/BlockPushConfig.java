@@ -79,9 +79,9 @@ public class BlockPushConfig {
 		
 		for (int i = 0; i < split.length; i++){
 			String[] splitLoc = split[i].split(",");
-			signPos[i].setX(Integer.parseInt(splitLoc[1].trim()));
-			signPos[i].setY(Integer.parseInt(splitLoc[2].trim()));
-			signPos[i].setZ(Integer.parseInt(splitLoc[3].trim()));
+			signPos[i].setX(Integer.parseInt(splitLoc[0].trim()));
+			signPos[i].setY(Integer.parseInt(splitLoc[1].trim()));
+			signPos[i].setZ(Integer.parseInt(splitLoc[2].trim()));
 		}
 	}
 }

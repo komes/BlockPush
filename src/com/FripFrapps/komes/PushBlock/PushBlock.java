@@ -9,7 +9,6 @@ import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -72,10 +71,6 @@ public class PushBlock extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, blockListener,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.REDSTONE_CHANGE, (Listener) blockListener,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.SIGN_CHANGE, (Listener) blockListener,
 				Event.Priority.Normal, this);
 		// Get the infomation from the yml file.
 		PluginDescriptionFile pdfFile = this.getDescription();
